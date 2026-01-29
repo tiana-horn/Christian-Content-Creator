@@ -25,19 +25,52 @@ class MainApp extends StatelessWidget {
 }
 
 class ScriptureModel {
+
+
   Future<Scripture> getScriptureOfTheDay() async {
     await dotenv.load(fileName:".env");
-
-    final day = "${Random().nextInt(365)}";
-    // const bibleid = '111';
     String token = dotenv.env['X-YVP-App-Key'] ?? '';
 
+      Scripture? scripture;
+
+        scripture = await getPassageId();
+
+        String passageid = '${scripture.passageid}';
+        String bibleid = '206';
+
+        final newuri = Uri.https(
+          'api.youversion.com',
+          '/v1/bibles/$bibleid/passages/$passageid',
+        );
+        
+        final newresponse = await get(
+          newuri,
+          headers: {
+            'X-YVP-App-Key': token,
+            'Content-Type': 'application/json',
+            },
+          );
+
+      if (newresponse.statusCode != 200) {
+        throw HttpException('Failed to update resource');
+      }
+      
+
+      return Scripture.fromJson(jsonDecode(newresponse.body));
+    }
+
+
+    Future<Scripture> getPassageId() async {
+    await dotenv.load(fileName:".env");
+    String token = dotenv.env['X-YVP-App-Key'] ?? '';
+
+
+    final day = "${Random().nextInt(365)}";
     final uri = Uri.https(
       'api.youversion.com',
       '/v1/verse_of_the_days/$day',
     );
-
-    //get passage id
+    
     final response = await get(
       uri,
       headers: {
@@ -52,6 +85,7 @@ class ScriptureModel {
 
       return Scripture.fromJson(jsonDecode(response.body));
     }
+
 }
 
 
@@ -80,6 +114,7 @@ class ScriptureViewModel extends ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+
 }
 
 
@@ -168,7 +203,10 @@ class ScriptureWidget extends StatelessWidget {
         spacing: 10.0,
         children: [  
           Text(
-            '${scripture.passageid}',
+            '${scripture.content}',
+          ),
+          Text(
+            '${scripture.reference}',
           ),
         ],
       ),
