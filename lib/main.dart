@@ -129,6 +129,7 @@ class ScriptureView extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
         title: const Text('Random Scripture Generator'),
         actions: [],
