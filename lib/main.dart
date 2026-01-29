@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -27,7 +28,7 @@ class ScriptureModel {
   Future<Scripture> getScriptureOfTheDay() async {
     await dotenv.load(fileName:".env");
 
-    const day = '2';
+    final day = "${Random().nextInt(365)}";
     // const bibleid = '111';
     String token = dotenv.env['X-YVP-App-Key'] ?? '';
 
@@ -92,7 +93,7 @@ class ScriptureView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verse Of The Day'),
+        title: const Text('Random Scripture Generator'),
         actions: [],
         ),
         body: ListenableBuilder(
@@ -145,7 +146,7 @@ class ScripturePage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: nextScriptureCallback, 
-                child: Text('Next verse of the day'),
+                child: Text('Get another scripture'),
                 ),
             ],
         )
