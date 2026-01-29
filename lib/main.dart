@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 import 'scripture.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
   runApp(const MainApp());
@@ -139,15 +141,15 @@ class ScriptureView extends StatelessWidget {
               viewModel.scripture,
               viewModel.errorMessage,
             )) {
-              (true, _, _) => CircularProgressIndicator(),
+              (true, _, _) => Center(child:CircularProgressIndicator()),
               (false, _, String message) => Center(child: Text(message)),
               (false, null, null) => Center(
                 child: Text('An unknown error has occured'),
               ),
-              (false, Scripture scripture, null) => ScripturePage(
+              (false, Scripture scripture, null) => Center(child: ScripturePage(
                 scripture: scripture,
                 nextScriptureCallback: viewModel.getScriptureOfTheDay,
-              ),
+              )),
             };
           },
         ),
@@ -169,9 +171,10 @@ class ScripturePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        height: 200,
+      child: Center(child:
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        height: 500,
         child: Column(
           children: [
             Flexible(
@@ -181,11 +184,14 @@ class ScripturePage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: nextScriptureCallback, 
-                child: Text('Get another scripture'),
+                child: Text('Get another scripture',style: GoogleFonts.poppins(fontSize: 14)
+                ),
+
                 ),
             ],
         )
       ),
+      )
     );
   }
 }
@@ -204,9 +210,11 @@ class ScriptureWidget extends StatelessWidget {
         children: [  
           Text(
             '${scripture.content}',
+             style: GoogleFonts.poppins(fontSize: 33, fontWeight: FontWeight.bold)
           ),
           Text(
             '${scripture.reference}',
+             style: GoogleFonts.poppins(fontSize: 21)
           ),
         ],
       ),
