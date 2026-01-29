@@ -10,7 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'scripture.dart';
 
-void main() {
+void main()  {
   runApp(const MainApp());
 }
 
@@ -31,7 +31,7 @@ class ScriptureModel {
 
   Future<Scripture> getScriptureOfTheDay() async {
     await dotenv.load(fileName:".env");
-    String token = dotenv.env['X-YVP-App-Key'] ?? '';
+    String token = dotenv.env['X_YVP_App_Key'] ?? '';
 
       Scripture? scripture;
 
@@ -64,7 +64,7 @@ class ScriptureModel {
 
     Future<Scripture> getPassageId() async {
     await dotenv.load(fileName:".env");
-    String token = dotenv.env['X-YVP-App-Key'] ?? '';
+    String token = dotenv.env['X_YVP_App_Key'] ?? '';
 
 
     final day = "${Random().nextInt(365)}";
